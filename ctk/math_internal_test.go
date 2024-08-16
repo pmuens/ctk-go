@@ -4,13 +4,13 @@ import "testing"
 
 func TestAdd(t *testing.T) {
 	tt := map[string]struct {
-		a        int
-		b        int
-		expected int
+		a    int
+		b    int
+		want int
 	}{
-		"1 + 2": {a: 1, b: 2, expected: 3},
-		"2 + 3": {a: 2, b: 3, expected: 5},
-		"3 + 4": {a: 3, b: 4, expected: 7},
+		"1 + 2": {a: 1, b: 2, want: 3},
+		"2 + 3": {a: 2, b: 3, want: 5},
+		"3 + 4": {a: 3, b: 4, want: 7},
 	}
 
 	for name, tc := range tt {
@@ -19,8 +19,8 @@ func TestAdd(t *testing.T) {
 
 			got := add(tc.a, tc.b)
 
-			if got != tc.expected {
-				t.Errorf("expected %v, got %v", tc.expected, got)
+			if got != tc.want {
+				t.Errorf("want %v, got %v", tc.want, got)
 			}
 		})
 	}
