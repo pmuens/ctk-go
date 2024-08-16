@@ -1,5 +1,6 @@
 package ctk
 
+// Mul multiplies a by b and returns the result.
 func Mul(a, b int) int {
 	result := 0
 
@@ -10,6 +11,7 @@ func Mul(a, b int) int {
 	return result
 }
 
+// add adds a and b and returns the result.
 func add(a, b int) int {
 	return a + b
 }
