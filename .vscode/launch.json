@@ -8,6 +8,14 @@
       "mode": "auto",
       "args": [],
       "program": "${workspaceFolder}/cmd/ctk"
+    },
+    // See: https://stackoverflow.com/a/43233176
+    {
+      "name": "Debug Test",
+      "type": "go",
+      "request": "launch",
+      "mode": "test",
+      "program": "${relativeFileDirname}"
     }
   ]
 }
