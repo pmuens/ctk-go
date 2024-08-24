@@ -1,10 +1,10 @@
-package ctk_test
+package chacha20_test
 
 import (
 	"slices"
 	"testing"
 
-	"github.com/pmuens/ctk-go/ctk"
+	"github.com/pmuens/ctk-go/ctk/chacha20"
 )
 
 func TestChaCha20XORWithKeyStream(t *testing.T) {
@@ -38,7 +38,7 @@ func TestChaCha20XORWithKeyStream(t *testing.T) {
 			0x74, 0x2e,
 		}
 
-		cha := ctk.NewChaCha20(key, nonce, counter)
+		cha := chacha20.NewChaCha20(key, nonce, counter)
 		ciphertext := cha.XORWithKeyStream(plaintext)
 
 		got := ciphertext
@@ -88,10 +88,10 @@ func TestChaCha20XORWithKeyStream(t *testing.T) {
 			0x74, 0x2e,
 		}
 
-		cha1 := ctk.NewChaCha20(key, nonce, counter)
+		cha1 := chacha20.NewChaCha20(key, nonce, counter)
 		ciphertext := cha1.XORWithKeyStream(data)
 
-		cha2 := ctk.NewChaCha20(key, nonce, counter)
+		cha2 := chacha20.NewChaCha20(key, nonce, counter)
 		plaintext := cha2.XORWithKeyStream(ciphertext)
 
 		got := plaintext

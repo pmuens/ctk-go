@@ -1,4 +1,4 @@
-package ctk
+package chacha20
 
 import (
 	"slices"

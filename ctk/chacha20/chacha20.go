@@ -1,4 +1,6 @@
-package ctk
+// Package chacha20 implements the ChaCha20 stream cipher as specified in
+// https://datatracker.ietf.org/doc/html/rfc8439.
+package chacha20
 
 import (
 	"encoding/binary"
