@@ -9,6 +9,9 @@ import (
 	"slices"
 )
 
+// BlockSize is the size (in bytes) of the input to be processed at a time.
+const BlockSize = 64
+
 // ChaCha20 is a stateful instance of the ChaCha stream cipher.
 type ChaCha20 struct {
 	// counter is the block counter.
@@ -66,45 +69,45 @@ func (c *ChaCha20) XORWithKeyStream(data []byte) []byte {
 	// Create a copy of the data to be processed so we can manipulate it directly.
 	result := slices.Clone(data)
 
-	numBlocks := int(math.Ceil(float64(len(data)) / 64))
+	numBlocks := int(math.Ceil(float64(len(data)) / BlockSize))
 
 	for i := range numBlocks {
 		keyStream := c.createBlock()
 
-		// A chunk is a 64 byte (or less) block from the input data.
+		// A block is a BlockSize bytes (or less) block from the input data.
 		// Default to slice from the last sliced block to the end (to handle blocks
-		// that have fewer than 64 bytes).
-		chunk := result[(i * 64):]
-		// Check if an exact 64 byte block can be sliced and slice it, if so.
-		if (i+1)*64 < len(data) {
-			chunk = result[(i * 64):((i + 1) * 64)]
+		// that have fewer than BlockSize bytes).
+		block := result[(i * BlockSize):]
+		// Check if an exact BlockSize byte block can be sliced and slice it, if so.
+		if (i+1)*BlockSize < len(data) {
+			block = result[(i * BlockSize):((i + 1) * BlockSize)]
 		}
 
-		// Process the chunk, 4 bytes a time (8 bit * 4 = 32 bit) as we're XORing it
+		// Process the block, 4 bytes a time (8 bit * 4 = 32 bit) as we're XORing it
 		// with one word (32 bit).
-		for i := 0; i+4 <= len(chunk); i += 4 {
+		for i := 0; i+4 <= len(block); i += 4 {
 			// Extract a 32 bit value (uint32) from the key stream.
 			keyStreamIndex := i >> 2
 			word := keyStream[keyStreamIndex]
-			// XOR the chunk with the word byte-by-byte.
-			chunk[i] ^= byte(word)
-			chunk[i+1] ^= byte(word >> 8)
-			chunk[i+2] ^= byte(word >> 16)
-			chunk[i+3] ^= byte(word >> 24)
+			// XOR the block with the word byte-by-byte.
+			block[i] ^= byte(word)
+			block[i+1] ^= byte(word >> 8)
+			block[i+2] ^= byte(word >> 16)
+			block[i+3] ^= byte(word >> 24)
 		}
 
 		// The bitmask is used to calculate the maximum number of bytes that are a
-		// multiple of 4 that still fit into the current chunk.
+		// multiple of 4 that still fit into the current block.
 		// This works because the values 1, 2 and 3 in binary can't occur (2^0 and
 		// 2^1 are set to 0).
-		numProcessedBytes := len(chunk) & 0b1111100
+		numProcessedBytes := len(block) & 0b1111100
 		// Check if there are still some bytes left to process.
-		if numProcessedBytes < len(chunk) {
+		if numProcessedBytes < len(block) {
 			// Extract a 32 bit value (uint32) from the key stream.
 			keyStreamIndex := numProcessedBytes >> 2
 			word := keyStream[keyStreamIndex]
-			// XOR the rest of the chunk with the word byte-by-byte.
-			rest := chunk[numProcessedBytes:]
+			// XOR the rest of the block with the word byte-by-byte.
+			rest := block[numProcessedBytes:]
 			for i := 0; i < len(rest); i++ {
 				rest[i] ^= byte(word)
 				word >>= 8
