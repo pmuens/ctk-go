@@ -72,7 +72,7 @@ func (c *ChaCha20) XORWithKeyStream(data []byte) []byte {
 	numBlocks := int(math.Ceil(float64(len(data)) / BlockSize))
 
 	for i := range numBlocks {
-		keyStream := c.createBlock()
+		keyStream := c.CreateBlock()
 
 		// A block is a BlockSize bytes (or less) block from the input data.
 		// Default to slice from the last sliced block to the end (to handle blocks
@@ -118,9 +118,9 @@ func (c *ChaCha20) XORWithKeyStream(data []byte) []byte {
 	return result
 }
 
-// createBlock produces a 512 bit ChaCha20 block by permuting the state via 10
+// CreateBlock produces a 512 bit ChaCha20 block by permuting the state via 10
 // double rounds (10 * 2 = 20 rounds in total).
-func (s *ChaCha20) createBlock() [16]uint32 {
+func (s *ChaCha20) CreateBlock() [16]uint32 {
 	s.state = initState(s.key, s.nonce, s.counter)
 	old_state := s.state
 
