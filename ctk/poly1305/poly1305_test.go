@@ -66,7 +66,6 @@ func TestPoly1305GenerateTag(t *testing.T) {
 		if got != want {
 			t.Errorf("want %v, got %v", want, got)
 		}
-
 	})
 
 	t.Run("RFC 8439 - Test Vectors - A.3 - #2", func(t *testing.T) {
