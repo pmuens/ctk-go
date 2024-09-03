@@ -2,13 +2,32 @@
 
 Cryptographic primitives for [Cypherpunks](https://en.wikipedia.org/wiki/Cypherpunk) that don't subscribe to ["trust me bro"](https://en.wikipedia.org/wiki/Nothing-up-my-sleeve_number) [security assumptions](<https://en.wikipedia.org/wiki/Backdoor_(computing)>).
 
-**Note:** The implementations in this repo shouldn't be used in a production environment as they weren't audited.
+**Note:** The implementations in this repo shouldn't be used in a production environment as they are neither optimized (e.g. to combat constant-time attacks), nor audited.
 
 ## Setup
 
 1. `git clone <url>`
 2. `asdf install`
 3. `make test`
+
+## Primitives
+
+- Stream Cipher
+  - ChaCha20 ([RFC 8439](https://datatracker.ietf.org/doc/html/rfc8439))
+- MAC
+  - Poly1305 ([RFC 8439](https://datatracker.ietf.org/doc/html/rfc8439))
+- AEAD
+  - ChaCha20-Poly1305 ([RFC 8439](https://datatracker.ietf.org/doc/html/rfc8439))
+  - XChaCha20 ([RFC draft-irtf-cfrg-xchacha-03](https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-xchacha-03))
+  - XChaCha20-Poly1305 ([RFC draft-irtf-cfrg-xchacha-03](https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-xchacha-03))
+- Hash
+  - Blake2 ([RFC 7693](https://datatracker.ietf.org/doc/html/rfc7693))
+- KDF
+  - Argon2 ([RFC 9106](https://datatracker.ietf.org/doc/html/rfc9106))
+- Key Exchange
+  - X25519 ([RFC 7748](https://datatracker.ietf.org/doc/html/rfc7748))
+- Digital Signatures
+  - EdDSA (Blake2b + edwards25519) ([RFC 8032](https://datatracker.ietf.org/doc/html/rfc8032))
 
 ## Useful Commands
 
