@@ -19,12 +19,6 @@ const (
 // ChaCha20Poly1305 is a stateful instance of the ChaCha20-Poly1305 AEAD
 // algorithm.
 type ChaCha20Poly1305 struct {
-	// key is the key used for encryption / decryption.
-	key [32]byte
-
-	// nonce is the used nonce that shouldn't be repeated when the same key is used.
-	nonce [12]byte
-
 	// chacha20 is an instance of the ChaCha20 stream cipher.
 	chacha20 *chacha20.ChaCha20
 
@@ -48,8 +42,6 @@ func NewChaCha20Poly1305(key [32]byte, nonce [12]byte) *ChaCha20Poly1305 {
 	poly1305 := poly1305.NewPoly1305(polyKey)
 
 	return &ChaCha20Poly1305{
-		key:      key,
-		nonce:    nonce,
 		chacha20: chacha20,
 		poly1305: poly1305,
 	}
