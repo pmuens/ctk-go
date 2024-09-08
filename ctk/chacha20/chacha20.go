@@ -124,9 +124,7 @@ func (s *ChaCha20) CreateBlock() [16]uint32 {
 	s.state = initState(s.key, s.nonce, s.counter)
 	old_state := s.state
 
-	for range 10 {
-		s.doubleRound()
-	}
+	s.TwentyRounds()
 
 	for i, val := range old_state {
 		s.state[i] += val
@@ -135,6 +133,14 @@ func (s *ChaCha20) CreateBlock() [16]uint32 {
 	// Increment the counter.
 	s.counter += 1
 
+	return s.state
+}
+
+// TwentyRounds permutes the state by running the doubleRound function 10 times.
+func (s *ChaCha20) TwentyRounds() [16]uint32 {
+	for range 10 {
+		s.doubleRound()
+	}
 	return s.state
 }
 
