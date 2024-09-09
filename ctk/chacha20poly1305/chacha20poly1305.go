@@ -36,9 +36,10 @@ func NewChaCha20Poly1305(key [32]byte, nonce [12]byte) *ChaCha20Poly1305 {
 	// Create a new instance of ChaCha20 that will be used for the AEAD construction.
 	chacha20 := chacha20.NewChaCha20(key, nonce, counter)
 
-	// Use ChaCha20 to generated the Poly1305 key and create a new instance of
-	// Poly1305 with it.
-	polyKey := poly1305KeyGen(chacha20)
+	// Use ChaCha20's first block to generated the Poly1305 key and create a new
+	// instance of Poly1305 with it.
+	firstBlock := chacha20.CreateBlock()
+	polyKey := Poly1305KeyGen(firstBlock)
 	poly1305 := poly1305.NewPoly1305(polyKey)
 
 	return &ChaCha20Poly1305{
@@ -57,7 +58,7 @@ func (c *ChaCha20Poly1305) Encrypt(plaintext []byte, aad []byte) ([]byte, [16]by
 	ciphertext := c.chacha20.XORWithKeyStream(plaintext)
 
 	// Get the padded input for Poly1305 and create a tag based on such data.
-	poly1305Input := generatePoly1305Input(aad, ciphertext)
+	poly1305Input := GeneratePoly1305Input(aad, ciphertext)
 	tag := c.poly1305.GenerateTag(poly1305Input)
 
 	return ciphertext, tag
@@ -69,7 +70,7 @@ func (c *ChaCha20Poly1305) Encrypt(plaintext []byte, aad []byte) ([]byte, [16]by
 // Returns an error if the tag is invalid.
 func (c *ChaCha20Poly1305) Decrypt(ciphertext []byte, aad []byte, tag [16]byte) ([]byte, error) {
 	// Get the padded input for Poly1305 and create a tag based on such data.
-	poly1305Input := generatePoly1305Input(aad, ciphertext)
+	poly1305Input := GeneratePoly1305Input(aad, ciphertext)
 	computedTag := c.poly1305.GenerateTag(poly1305Input)
 
 	// Return an error and exit early if the tags don't match.
@@ -85,9 +86,30 @@ func (c *ChaCha20Poly1305) Decrypt(ciphertext []byte, aad []byte, tag [16]byte) 
 	return plaintext, nil
 }
 
-// generatePoly1305Input creates the (padded) input to be processed by Poly1305
+// Poly1305KeyGen generates the Poly1305 key based on the first ChaCha20 block.
+func Poly1305KeyGen(block [16]uint32) [32]byte {
+	// The Poly1305 key will be 256 bit long (128 bit for the r and 128 bit for
+	// the s value).
+	var result [32]byte
+
+	// Only the first 256 bit of the 512 bit ChaCha20 state will be used.
+	// Iterate over every word (32 bit) of those 256 bit.
+	for i, word := range block[0:8] {
+		index := (i * 4)
+
+		// Extract the individual bytes from the word.
+		result[index] = byte(word)
+		result[index+1] = byte(word >> 8)
+		result[index+2] = byte(word >> 16)
+		result[index+3] = byte(word >> 24)
+	}
+
+	return result
+}
+
+// GeneratePoly1305Input creates the (padded) input to be processed by Poly1305
 // to create a tag.
-func generatePoly1305Input(aad []byte, ciphertext []byte) []byte {
+func GeneratePoly1305Input(aad []byte, ciphertext []byte) []byte {
 	// Add padding to AAD so that its total length is a multiple of 16.
 	paddedAad := padTo16Bytes(aad)
 
@@ -141,30 +163,6 @@ func padTo16Bytes(data []byte) []byte {
 	for range toPad {
 		// Append 0x00 as the padding.
 		result = append(result, 0x00)
-	}
-
-	return result
-}
-
-// poly1305KeyGen generates the Poly1305 key via the ChaCha20 block function.
-func poly1305KeyGen(chacha20 *chacha20.ChaCha20) [32]byte {
-	// Create the first block of 512 bit state.
-	block := chacha20.CreateBlock()
-
-	// The Poly1305 key will be 256 bit long (128 bit for the r and 128 bit for
-	// the s value).
-	var result [32]byte
-
-	// Only the first 256 bit of the 512 bit ChaCha20 state will be used.
-	// Iterate over every word (32 bit) of those 256 bit.
-	for i, word := range block[0:8] {
-		index := (i * 4)
-
-		// Extract the individual bytes from the word.
-		result[index] = byte(word)
-		result[index+1] = byte(word >> 8)
-		result[index+2] = byte(word >> 16)
-		result[index+3] = byte(word >> 24)
 	}
 
 	return result

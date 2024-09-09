@@ -36,3 +36,10 @@ func (x *XChaCha20) XORWithKeyStream(data []byte) []byte {
 	// Reuse the ChaCha20 XORWithKeyStream function.
 	return x.chacha20.XORWithKeyStream(data)
 }
+
+// CreateBlock produces a 512 bit XChaCha20 block by permuting the state via 10
+// double rounds (10 * 2 = 20 rounds in total).
+func (x *XChaCha20) CreateBlock() [16]uint32 {
+	// Reuse the ChaCha20 CreateBlock function.
+	return x.chacha20.CreateBlock()
+}
