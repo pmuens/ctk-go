@@ -12,13 +12,7 @@ import (
 const BlockSize = 16
 
 // P is the prime 2^130-5.
-var P *big.Int
-
-// Need to use the init function as P can't be a constant.
-// See: https://stackoverflow.com/a/49831018
-func init() {
-	P, _ = new(big.Int).SetString("3fffffffffffffffffffffffffffffffb", 16)
-}
+var P, _ = new(big.Int).SetString("3fffffffffffffffffffffffffffffffb", 16)
 
 // Poly1305 is a stateful instance of the Poly1305 one-time authenticator.
 type Poly1305 struct {
