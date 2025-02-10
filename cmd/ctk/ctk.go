@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/pmuens/ctk-go/ctk"
+	"github.com/pmuens/xchacha20-poly1305/ctk"
 )
 
 func main() {

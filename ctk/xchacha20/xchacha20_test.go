@@ -4,7 +4,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/pmuens/ctk-go/ctk/xchacha20"
+	"github.com/pmuens/xchacha20-poly1305/ctk/xchacha20"
 )
 
 func TestXChaCha20XORWithKeyStream(t *testing.T) {

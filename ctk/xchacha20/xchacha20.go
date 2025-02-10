@@ -2,7 +2,7 @@
 // https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-xchacha-03.
 package xchacha20
 
-import "github.com/pmuens/ctk-go/ctk/chacha20"
+import "github.com/pmuens/xchacha20-poly1305/ctk/chacha20"
 
 // XChaCha20 is a stateful instance of XChaCha20.
 type XChaCha20 struct {
