@@ -8,7 +8,7 @@ Cryptographic primitives for [Cypherpunks](https://en.wikipedia.org/wiki/Cypherp
 
 1. `git clone <url>`
 2. `asdf install`
-3. `make test`
+3. `go test -race ./...`
 
 ## Primitives
 
