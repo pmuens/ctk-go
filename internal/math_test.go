@@ -1,10 +1,10 @@
-package ctk_test
+package internal_test
 
 import (
 	"errors"
 	"testing"
 
-	"github.com/pmuens/xchacha20-poly1305/ctk"
+	"github.com/pmuens/xchacha20-poly1305/internal"
 )
 
 func TestMul(t *testing.T) {
@@ -22,7 +22,7 @@ func TestMul(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			got := ctk.Mul(tc.a, tc.b)
+			got := internal.Mul(tc.a, tc.b)
 
 			if got != tc.want {
 				t.Errorf("want %v, got %v", tc.want, got)
@@ -39,7 +39,7 @@ func TestDiv(t *testing.T) {
 		err  error
 	}{
 		"2 / 1":  {a: 2, b: 1, want: 2, err: nil},
-		"1 / 0":  {a: 1, b: 0, want: 0, err: ctk.ErrDivisionByZero},
+		"1 / 0":  {a: 1, b: 0, want: 0, err: internal.ErrDivisionByZero},
 		"2 / 2":  {a: 2, b: 2, want: 1, err: nil},
 		"12 / 2": {a: 12, b: 2, want: 6, err: nil},
 		"3 / 2":  {a: 3, b: 2, want: 1, err: nil},
@@ -49,7 +49,7 @@ func TestDiv(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			got, err := ctk.Div(tc.a, tc.b)
+			got, err := internal.Div(tc.a, tc.b)
 
 			if !errors.Is(err, tc.err) {
 				t.Errorf("want error %v, got %v", tc.err, err)

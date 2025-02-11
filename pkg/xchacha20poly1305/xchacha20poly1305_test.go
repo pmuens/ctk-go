@@ -5,7 +5,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/pmuens/xchacha20-poly1305/ctk/xchacha20poly1305"
+	"github.com/pmuens/xchacha20-poly1305/pkg/xchacha20poly1305"
 )
 
 func TestXChaCha20Poly1305Encrypt(t *testing.T) {

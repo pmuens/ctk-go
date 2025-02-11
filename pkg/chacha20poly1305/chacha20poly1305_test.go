@@ -5,8 +5,8 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/pmuens/xchacha20-poly1305/ctk/chacha20"
-	"github.com/pmuens/xchacha20-poly1305/ctk/chacha20poly1305"
+	"github.com/pmuens/xchacha20-poly1305/pkg/chacha20"
+	"github.com/pmuens/xchacha20-poly1305/pkg/chacha20poly1305"
 )
 
 func TestChaCha20Poly1305Poly1305KeyGen(t *testing.T) {

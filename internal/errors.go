@@ -1,4 +1,4 @@
-package ctk
+package internal
 
 // Error defines an error.
 type Error string

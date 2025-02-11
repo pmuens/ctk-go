@@ -3,7 +3,7 @@ package poly1305_test
 import (
 	"testing"
 
-	"github.com/pmuens/xchacha20-poly1305/ctk/poly1305"
+	"github.com/pmuens/xchacha20-poly1305/pkg/poly1305"
 )
 
 func TestPoly1305GenerateTag(t *testing.T) {

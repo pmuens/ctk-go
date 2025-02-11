@@ -1,4 +1,4 @@
-package ctk
+package internal
 
 import "testing"
 

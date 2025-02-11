@@ -1,6 +1,6 @@
 package xchacha20
 
-import "github.com/pmuens/xchacha20-poly1305/ctk/chacha20"
+import "github.com/pmuens/xchacha20-poly1305/pkg/chacha20"
 
 // HChaCha20 is a stateful instance of HChaCha20.
 type HChaCha20 struct {

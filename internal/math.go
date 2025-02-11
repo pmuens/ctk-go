@@ -1,4 +1,4 @@
-package ctk
+package internal
 
 const (
 	// ErrDivisionByZero is returned if there's an attempt to divide by zero.

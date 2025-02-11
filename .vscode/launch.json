@@ -7,7 +7,7 @@
       "request": "launch",
       "mode": "auto",
       "args": [],
-      "program": "${workspaceFolder}/cmd/ctk"
+      "program": "${workspaceFolder}/cmd/cli"
     },
     // See: https://stackoverflow.com/a/43233176
     {

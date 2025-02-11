@@ -3,7 +3,7 @@ package xchacha20_test
 import (
 	"testing"
 
-	"github.com/pmuens/xchacha20-poly1305/ctk/xchacha20"
+	"github.com/pmuens/xchacha20-poly1305/pkg/xchacha20"
 )
 
 func TestHChaCha20GenerateSubkey(t *testing.T) {
